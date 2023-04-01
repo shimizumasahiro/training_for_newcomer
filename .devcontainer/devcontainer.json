@@ -1,0 +1,14 @@
+{
+  "runArgs": [],
+  "name": "training_for_newcomer",
+  "dockerFile": "Dockerfile",
+  "extensions": [
+      "github.copilot",
+      "ms-python.python",
+      "ms-python.vscode-pylance",
+  ],
+  "settings": {
+      "python.analysis.typeCheckingMode": "basic",
+      "python.pythonPath": "/opt/conda/bin/python"
+  }
+}
