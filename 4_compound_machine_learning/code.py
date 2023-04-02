@@ -9,7 +9,7 @@ def draw_molecule(csvfile: str) -> None:
     # 課題 4-1
     pass
 
-def create_2d_descriptors(csvfile: str) -> Union[npt.NDArray[np.float_], List[float]]:
+def create_2d_descriptors(smiles: str) -> Union[npt.NDArray[np.float_], List[float]]:
     # 課題 4-2
     return []
 
@@ -32,11 +32,12 @@ def grid_search(csvfile: str) -> float:
     return 0.0
 
 if __name__ == "__main__":
+    smiles = "C(=O)(c1ccc(OCCCCCC)cc1)CCNc1cc(Cl)ccc1"
     filepath = "data/fukunishi_data.csv"
     # 課題 4-1
     draw_molecule(filepath)
     # 課題 4-2
-    print(create_2d_descriptors(filepath))
+    print(create_2d_descriptors(smiles))
     # 課題 4-3
     print(predict_logpapp(filepath))
     # 課題 4-4

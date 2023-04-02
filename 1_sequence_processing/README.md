@@ -24,8 +24,8 @@
 
 例
 ```
-配列　: atgccgt
-クエリ: cg
+配列　: ATGCCGT
+クエリ: CG
 出力　: F5, R6
 ```
 

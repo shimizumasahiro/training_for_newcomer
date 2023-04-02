@@ -2,9 +2,9 @@ from typing import List, Union
 import numpy.typing as npt
 import numpy as np
 
-def base_count(fastafile: str) -> int:
+def base_count(fastafile: str) -> List[int]:
     # 課題 1-1
-    return 0
+    return [0, 0, 0, 0] # A, T, G, C
 
 def gen_rev_comp_seq(fastafile: str) -> str:
     # 課題 1-2
