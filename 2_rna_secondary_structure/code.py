@@ -25,8 +25,8 @@ if __name__ == "__main__":
     # 課題 2-2
     print(enumerate_possible_pairs(sequence))
     # 課題 2-3
-    print(enumerate_continuous_pairs(sequence), 2)
+    print(enumerate_continuous_pairs(sequence, 2))
     # 課題 2-4
-    print(create_dotbracket_notation(sequence), 2)
+    print(create_dotbracket_notation(sequence, 2))
 
 
