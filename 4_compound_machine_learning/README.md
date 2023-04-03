@@ -16,7 +16,7 @@ CSVファイルの中に含まれる `CHEMBL540227` のSMILES式を読み込み�
 
 ![mol](https://user-images.githubusercontent.com/6902135/229276218-2581661d-cc33-4a49-b568-dde076cec897.svg)
 
-## 4-2 2D記述子の作成
+## 4-2 2D記述子の作成（自動テスト対象）
 
 所望の化合物に対し、RDKitによって2D記述子 (descriptor) を全て計算し、それらを並べたベクトルを構成せよ。
 
@@ -26,7 +26,7 @@ CSVファイルの中に含まれる `CHEMBL540227` のSMILES式を読み込み�
 出力：実数値列 [12.24, 0.11, 12.24, 0.11, 0.40, ...]
 ```
 
-## 4-3 2D記述子に基づく回帰予測
+## 4-3 2D記述子に基づく回帰予測（自動テスト対象）
 
 説明変数（特徴量）を2D記述子、 目的変数を `LogP app` とした、回帰予測を実施せよ。学習器は Random Forest をデフォルトパラメータのまま用いよ。
 
@@ -39,7 +39,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=700, random_state=0)
 ```
 
-## 4-4 グリッドサーチに基づくRandom Forestのハイパーパラメータ探索
+## 4-4 グリッドサーチに基づくRandom Forestのハイパーパラメータ探索（自動テスト対象）
 訓練データに対する 4-fold Cross Validation (CV) に基づいて、RMSE が最も低くなるパラメータをグリッドサーチで探索せよ。
 ただし、グリッドサーチのパラメータは以下のようにせよ。
 
