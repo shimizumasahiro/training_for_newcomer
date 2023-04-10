@@ -29,10 +29,10 @@ class TestCode(TestCase):
                      msg="課題1-4, search_motif()の出力が正しくありません。") 
 
   def test_translate(self):
-    expected = set(['MP_'])
+    expected = set(['MP'])
     output = set(code.translate(self.fastafile))
     self.assertEqual(output, expected,
-                     msg="課題1-5, translate()の出力が正しくありません。")
+                     msg="課題1-5, translate()の出力が正しくありません。終端コドンが無い場合は '_' を【付けない】でください。")
   
 
 class TestALDH2(TestCase):
