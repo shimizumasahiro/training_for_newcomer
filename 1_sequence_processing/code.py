@@ -1,9 +1,13 @@
 from typing import List, Union
 import numpy.typing as npt
 import numpy as np
+
 from Bio import SeqIO
+from Bio.Seq import Seq
+
 import inspect
 import matplotlib.pyplot as plt
+
 
 def read_fasta_file(fastapath: str) -> SeqIO.FastaIO:
     sequences = []
@@ -65,9 +69,35 @@ def search_motif(fastafile: str, motif: str) -> List[str]:
         result.append(f"R{size-index}")
     return result
 
+
+
 def translate(fastafile: str) -> List[str]:
-    # 課題 1-5
-    return []
+    #課題1-5
+    def preprocessing(seq):
+        if len(seq) % 3 == 0:
+            return seq
+        elif len(seq) % 3 == 1:
+            return seq[:-1]
+        else:
+            return seq[:-2]
+    proteins =[]
+    #データの読み込み
+    file_data = read_fasta_file(fastafile)
+    sequences = file_data[0].seq
+    rev_sequences = sequences.reverse_complement()
+
+    for seq in [sequences, rev_sequences]:
+        for frame in range(3):
+            processed_seq = preprocessing(seq[frame:])
+            start_positions = [i for i in range(len(processed_seq)-2) if processed_seq[i:i+3] == 'ATG']
+            for start in start_positions:
+                protein = seq[start:].translate(to_stop=True)
+                protein = str(protein) + "_"
+                proteins.append(protein)
+            proteins[-1] = proteins[-1].strip("_")
+    
+    return proteins
+
 
 if __name__ == "__main__":
     filepath = "data/NT_113952.1.fasta"
@@ -82,5 +112,7 @@ if __name__ == "__main__":
 
     # 課題 1-4
     print(search_motif(filepath, "ATG"))
-    # # 課題 1-5
-    # print(translate(filepath))
+    # 課題 1-5
+    print(translate(filepath))
+
+
