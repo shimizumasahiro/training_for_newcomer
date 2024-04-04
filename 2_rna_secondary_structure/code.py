@@ -33,7 +33,9 @@ def enumerate_pairs(fastafile: str) -> List[Tuple[int, int]]:
 
 def enumerate_possible_pairs(fastafile: str, min_distance: int=4) -> List[Tuple[int, int]]:
     # 課題 2-2
-    return []
+    pairs = enumerate_pairs(fastafile)
+    result = [pair for pair in pairs if pair[1] - pair[0] >= 4]
+    return result
 
 def enumerate_continuous_pairs(fastafile: str, min_distance: int=4, min_length: int=2) -> List[Tuple[int, int, int]]:
     # 課題 2-3
