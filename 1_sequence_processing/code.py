@@ -47,7 +47,23 @@ def calc_gc_content(fastafile: str, window: int=1000, step: int=300) -> Union[np
 
 def search_motif(fastafile: str, motif: str) -> List[str]:
     # 課題 1-4
-    return []
+    # データ読み込み
+    file_data = read_fasta_file(fastafile)
+    sequences = file_data[0].seq
+
+    #結果
+    result = []
+    #逆相補鎖の取得
+    reverse_seq = sequences.reverse_complement()
+    #全長の取得
+    size = len(sequences)
+    #検索
+    for index, sub in sequences.search([motif]):
+        result.append(f"F{index+1}")
+    
+    for index, sub in reverse_seq.search([motif]):
+        result.append(f"R{size-index}")
+    return result
 
 def translate(fastafile: str) -> List[str]:
     # 課題 1-5
@@ -64,7 +80,7 @@ if __name__ == "__main__":
     # plt.plot(index, result)
     # plt.savefig("課題1-3.pdf")
 
-    # # 課題 1-4
-    # print(search_motif(filepath, "ATG"))
+    # 課題 1-4
+    print(search_motif(filepath, "ATG"))
     # # 課題 1-5
     # print(translate(filepath))
