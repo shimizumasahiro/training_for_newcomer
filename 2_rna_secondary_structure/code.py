@@ -2,9 +2,34 @@ from typing import List, Tuple, Union
 import numpy.typing as npt
 import numpy as np
 
+from Bio import SeqIO
+from Bio.Seq import Seq
+
+import itertools
+
+def read_fasta_file(fastapath: str) -> SeqIO.FastaIO:
+    sequences = []
+    for record in SeqIO.parse(fastapath, "fasta"):
+        sequences.append(record)
+    return sequences
+
 def enumerate_pairs(fastafile: str) -> List[Tuple[int, int]]:
     # 課題 2-1
-    return []
+    result = []
+    #データの読み込み
+    sequence = read_fasta_file(fastafile)
+    sequence = sequence[0].seq
+    a_positions = [i for i, char in enumerate(sequence) if char == "A"]
+    u_positions = [i for i, char in enumerate(sequence) if char == "U"]
+    g_positions = [i for i, char in enumerate(sequence) if char == "G"]
+    c_positions = [i for i, char in enumerate(sequence) if char == "C"]
+
+
+    for a, b in itertools.product(a_positions, u_positions):
+        result.append((min(a+1, b+1), max(a+1, b+1)))
+    for a, b in itertools.product(c_positions, g_positions):
+        result.append((min(a+1, b+1), max(a+1, b+1)))
+    return result
 
 def enumerate_possible_pairs(fastafile: str, min_distance: int=4) -> List[Tuple[int, int]]:
     # 課題 2-2
