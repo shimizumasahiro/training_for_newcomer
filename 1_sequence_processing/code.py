@@ -20,7 +20,11 @@ def base_count(fastafile: str) -> List[int]:
 
 def gen_rev_comp_seq(fastafile: str) -> str:
     # 課題 1-2
-    return ""
+    # データの読み込み
+    file_data = read_fasta_file(fastafile)
+    sequences = file_data[0].seq
+    reverse_seq = sequences.reverse_complement()
+    return f"{reverse_seq}"
 
 def calc_gc_content(fastafile: str, window: int=1000, step: int=300) -> Union[npt.NDArray[np.float_], List[float]]:
     # 課題 1-3
@@ -39,8 +43,8 @@ if __name__ == "__main__":
     filepath = "data/NT_113952.1.fasta"
     # 課題 1-1
     print(base_count(filepath))
-    # # 課題 1-2
-    # print(gen_rev_comp_seq(filepath))
+    # 課題 1-2
+    print(gen_rev_comp_seq(filepath))
     # # 課題 1-3
     # print(calc_gc_content(filepath))
     # # 課題 1-4
