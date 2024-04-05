@@ -39,7 +39,32 @@ def enumerate_possible_pairs(fastafile: str, min_distance: int=4) -> List[Tuple[
 
 def enumerate_continuous_pairs(fastafile: str, min_distance: int=4, min_length: int=2) -> List[Tuple[int, int, int]]:
     # 課題 2-3
-    return []
+    #データの取得
+    sequence = read_fasta_file(fastafile)
+    sequence = sequence[0].seq
+
+    #結果
+    result = []
+
+    # 塩基対の取得
+    pairs = enumerate_possible_pairs(fastafile, min_distance=min_distance)
+    # 左の要素について昇順にソート
+    pairs.sort(key=lambda x: x[0])
+    # 連続塩基対の取得
+    for index, (a, b) in enumerate(pairs):
+        start_1 = a
+        start_2 = b
+        length = 1
+        for i in range(index+1, len(pairs)):
+            target_a, target_b = pairs[i]
+            if (target_a-1 == start_1) and (target_b+1 == start_2):
+                length += 1
+                start_1 = target_a
+                start_2 = target_b
+        if length >= min_length:
+            result.append((a, b, length))
+
+    return result
 
 def create_dotbracket_notation(fastafile: str, min_distance: int=4, min_length: int=2) -> str:
     # 課題 2-4
