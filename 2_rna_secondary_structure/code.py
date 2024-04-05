@@ -51,18 +51,18 @@ def enumerate_continuous_pairs(fastafile: str, min_distance: int=4, min_length: 
     # 左の要素について昇順にソート
     pairs.sort(key=lambda x: x[0])
     # 連続塩基対の取得
-    for index, (a, b) in enumerate(pairs):
-        start_1 = a
-        start_2 = b
+    i = 0
+    while i < len(pairs):
+        start_1, start_2 = pairs[i]
         length = 1
-        for i in range(index+1, len(pairs)):
-            target_a, target_b = pairs[i]
-            if (target_a-1 == start_1) and (target_b+1 == start_2):
-                length += 1
-                start_1 = target_a
-                start_2 = target_b
+        i += 1
+        while i < len(pairs) and pairs[i][0] == start_1 + length and pairs[i][1] == start_2 - length:
+            length += 1
+            i += 1
         if length >= min_length:
-            result.append((a, b, length))
+            result.append((start_1, start_2, length))
+
+    return result
 
     return result
 
@@ -75,30 +75,29 @@ def create_dotbracket_notation(fastafile: str, min_distance: int=4, min_length: 
     continuous_pairs = enumerate_continuous_pairs(fastafile, min_distance=min_distance, min_length=min_length)
 
     #結果
-    result = []
+    bracket = list(len(sequence) * ".")
     # それぞれの(start1, start2, lenght)について以下を行う
     for (start1, start2, length) in continuous_pairs:
         start1 -= 1
         start2 -= 1
-        bracket = list(len(sequence) * ".") 
-        for i in range(length):
-            bracket[start1] = "("
-            bracket[start2] = ")"
-            start1 += 1
-            start2 -= 1
-        result.append("".join(bracket))
+        bracket[start1:start1+length] = ["("] * length
+        bracket[start2-length+1:start2+1] = [")"] * length
         #結果の保存
-    return result[0]
+    return "".join(bracket)
 
 if __name__ == "__main__":
-    filepath = "data/AUCGCCAU.fasta"
+    filepath = "data/NM_014495.4.fasta"
     # 課題 2-1
     print(enumerate_pairs(filepath))
+    print("課題2-1:done")
     # 課題 2-2
     print(enumerate_possible_pairs(filepath))
+    print("課題2-2:done")
     # 課題 2-3
     print(enumerate_continuous_pairs(filepath, 2))
+    print("課題2-3:done")
     # 課題 2-4
     print(create_dotbracket_notation(filepath, 2))
+    print("課題2-4:done")
 
 
