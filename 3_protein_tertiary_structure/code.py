@@ -3,7 +3,21 @@ import numpy.typing as npt
 import numpy as np
 import pymol
 from pymol import cmd
+from Bio.PDB import PDBParser
+from Bio.SeqUtils import seq1
 pymol.finish_launching(['pymol', '-c'])
+
+def get_amino_acid_sequence(pdb_file, chain_id):
+    parser = PDBParser()
+    structure = parser.get_structure("PDB_structure", pdb_file)
+    for model in structure:
+        for chain in model:
+            if chain.id == chain_id:
+                sequence = ""
+                for residue in chain:
+                    if residue.id[0] == " ":
+                        sequence += seq1(residue.resname)
+                return sequence
 
 def calc_chain_center(pdbfile: str, chain: str) -> Union[npt.NDArray[np.float_], List[float]]:
     # 課題 3-2
@@ -47,4 +61,12 @@ if __name__ == "__main__":
     # cmd.rotate('x', 180, 'hemoglobin_1buw')
     # cmd.zoom('hemoglobin_1buw and chain A', 2)
     # cmd.png('hemoglobin_1buw_3-3-2.png')
+
+    #　課題3-4
+    # chain_ids = ["A", "B", "C", "D"]
+    # amino_acid_sequences = []
+    # for chain_id in chain_ids:
+    #     sequence = get_amino_acid_sequence(filepath, chain_id)
+    #     amino_acid_sequences.append(sequence)
+    # print(amino_acid_sequences)
 
