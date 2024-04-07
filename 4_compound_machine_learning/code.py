@@ -35,7 +35,15 @@ def predict_logpapp(csvfile: str) -> Union[npt.NDArray[np.float_], pd.Series, Li
     np.random.seed(0) # 出力を固定するためにseedを指定
     rfr = RandomForestRegressor(random_state=0) # 出力を固定するためにrandom_stateを指定
 
-    return 0.0
+    #データの取得
+    df = pd.read_csv(csvfile)
+    #random forest用のデータを作成
+    X = df['SMILES'].apply(create_2d_descriptors).tolist()
+    y = df['LogP app']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=700, random_state=0)
+    rfr.fit(X_train, y_train)
+    pred = rfr.predict(X_test)
+    return pred
 
 def grid_search(csvfile: str) -> float:
     # 課題 4-4
