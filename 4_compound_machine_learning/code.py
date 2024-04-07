@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 from rdkit import Chem
 from rdkit.Chem import Draw
-from rdkit.Chem.Draw import rdMolDraw2D
+from rdkit.Chem import Descriptors
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
@@ -23,7 +23,12 @@ def draw_molecule(csvfile: str) -> None:
 
 def create_2d_descriptors(smiles: str) -> Union[npt.NDArray[np.float_], List[float]]:
     # 課題 4-2
-    return []
+    mol = Chem.MolFromSmiles(smiles)
+    # 記述子の計算関数のリスト
+    descriptor_funcs = [func for _, func in Descriptors.descList]
+    # 記述子を計算
+    descriptors = [func(mol) for func in descriptor_funcs]
+    return np.array(descriptors)
 
 def predict_logpapp(csvfile: str) -> Union[npt.NDArray[np.float_], pd.Series, List[float]]:
     # 課題 4-3
