@@ -2,11 +2,23 @@ from typing import List, Union
 import numpy.typing as npt
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
+from rdkit import Chem
+from rdkit.Chem import Draw
+from rdkit.Chem.Draw import rdMolDraw2D
+
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 
 def draw_molecule(csvfile: str) -> None:
     # 課題 4-1
+    df = pd.read_csv(csvfile)
+    target = df.loc[df["Compound ID"] == "CHEMBL540227"]
+    smiles = target["SMILES"].iloc[0]
+    mol = Chem.MolFromSmiles(smiles)
+    img = Draw.MolToImage(mol)
+    img.save("CHEMBL540227.png")
     pass
 
 def create_2d_descriptors(smiles: str) -> Union[npt.NDArray[np.float_], List[float]]:
