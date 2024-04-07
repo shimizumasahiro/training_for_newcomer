@@ -10,6 +10,11 @@ from rdkit.Chem import Descriptors
 
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import make_scorer, mean_squared_error
+
+def rmse_score(y_true, y_pred):
+    return np.sqrt(mean_squared_error(y_true, y_pred))
 
 def draw_molecule(csvfile: str) -> None:
     # 課題 4-1
@@ -47,14 +52,28 @@ def predict_logpapp(csvfile: str) -> Union[npt.NDArray[np.float_], pd.Series, Li
 
 def grid_search(csvfile: str) -> float:
     # 課題 4-4
-    # こちらも出力を固定するためにseedやrandom_stateを指定すること
     np.random.seed(0)
+    #データセットの取得
+    df = pd.read_csv(csvfile)
+    X = df['SMILES'].apply(create_2d_descriptors).tolist()
+    y = df['LogP app']
+    # 探索パラメータ
+    n_estimators_list = [100, 200, 400]
+    max_depth_list = [5, 10, 15]
 
-    # # Xは説明変数、yは目的変数
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=700, random_state=0)
-    # 
+    # 最適化したい評価値RMSE
+    rmse_scorer = make_scorer(rmse_score, greater_is_better=False)
+    best_score = float('inf')
+    for n_estimators in n_estimators_list:
+        for max_depth in max_depth_list:
+            rfr = RandomForestRegressor(n_estimators=n_estimators, max_depth=max_depth, random_state=0)
+            rmse_scores = -cross_val_score(rfr, X, y, cv=4, scoring=rmse_scorer)
+            evaluation_score = np.mean(rmse_scores)
+            if evaluation_score < best_score:
+                best_score = evaluation_score
+                best_params = {'n_estimators': n_estimators, 'max_depth': max_depth}
 
-    return 0.0
+    return best_params, best_score
 
 if __name__ == "__main__":
     smiles = "C(=O)(c1ccc(OCCCCCC)cc1)CCNc1cc(Cl)ccc1"
@@ -62,8 +81,8 @@ if __name__ == "__main__":
     # 課題 4-1
     draw_molecule(filepath)
     # 課題 4-2
-    print(create_2d_descriptors(smiles))
-    # 課題 4-3
-    print(predict_logpapp(filepath))
+    # print(create_2d_descriptors(smiles))
+    # # 課題 4-3
+    # print(predict_logpapp(filepath))
     # 課題 4-4
     print(grid_search(filepath))
