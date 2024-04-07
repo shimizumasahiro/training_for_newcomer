@@ -5,6 +5,7 @@ import pymol
 from pymol import cmd
 from Bio.PDB import PDBParser
 from Bio.SeqUtils import seq1
+from Bio.PDB import PDBParser, Superimposer, Selection
 pymol.finish_launching(['pymol', '-c'])
 
 def get_amino_acid_sequence(pdb_file, chain_id):
@@ -69,4 +70,26 @@ if __name__ == "__main__":
     #     sequence = get_amino_acid_sequence(filepath, chain_id)
     #     amino_acid_sequences.append(sequence)
     # print(amino_acid_sequences)
+
+    # 課題3-5
+    # parser = PDBParser()
+    # structure_hemo = parser.get_structure("hemoglobin_1buw", filepath)
+    # structure_pred_hemo = parser.get_structure("pred_hemoglobin_1buw", "data/cf_pred.pdb")
+
+    # def get_atoms(structure, structure_pred):
+    #     atoms = []
+    #     atoms_pred = []
+    #     for (res, res_pred) in zip(structure.get_residues(), structure_pred.get_residues()):
+    #         if res.has_id("CA") and res_pred.has_id("CA"):
+    #             atoms.append(res["CA"])
+    #             atoms_pred.append(res_pred["CA"])
+    #     return atoms, atoms_pred
+    
+    # atoms_hemo, atoms_pred_hemo = get_atoms(structure_hemo, structure_pred_hemo)
+
+    # super_imposer = Superimposer()
+    # super_imposer.set_atoms(atoms_hemo, atoms_pred_hemo)
+    # super_imposer.apply(structure_pred_hemo.get_atoms())
+
+    # print(f"RMSD: {super_imposer.rms:.2f} Å")
 
